@@ -4,12 +4,15 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '32mb'}));
+app.use(express.urlencoded({ extended: true, limit: '32mb' }));
+//app.use(bodyParser.json());
 
-app.post('/', (req, res) => {
+app.all('/', (req, res) => {
   // 'X-ADOBESIGN_CLIENTID'ヘッダーから値を取得
-  const clientId = req.get('X-ADOBESIGN_CLIENTID');
-
+  const clientId = req.get('x-adobesign-clientid');
+  const headers = req.headers;
+  //console.log(headers);
   // リクエストボディを表示
   console.log('Request Body:', req.body);
 
